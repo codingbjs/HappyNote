@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "13442904477",
-    "firebase_url": "https://happy-note-13b07.firebaseio.com",
-    "project_id": "happy-note-13b07",
-    "storage_bucket": "happy-note-13b07.appspot.com"
+    "project_number": "680925292669",
+    "firebase_url": "https://happy-note-62455.firebaseio.com",
+    "project_id": "happy-note-62455",
+    "storage_bucket": "happy-note-62455.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:13442904477:android:bb96d0b95870e7652ebf74",
+        "mobilesdk_app_id": "1:680925292669:android:e5ad1713596742d518e914",
         "android_client_info": {
           "package_name": "com.codingbjs.happynote"
         }
       },
       "oauth_client": [
         {
-          "client_id": "13442904477-o17b68ivg05rs3id1e9llgi0hqsi48j6.apps.googleusercontent.com",
+          "client_id": "680925292669-tdikfqtlenmjgihelrc558qvtjdebjgr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.codingbjs.happynote",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "13442904477-dehurjujqvoo2c4vjnsue0i52gflo7qg.apps.googleusercontent.com",
+          "client_id": "680925292669-8b9rto3lhen6g9nb4rr0m6tpjukquqht.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD8Wj1TxM5As8y7na3OvjYfAcd50Cqz9kU"
+          "current_key": "AIzaSyAa9sLG4GZf0g4o69-PTOi7ZnYyqMo8te8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "13442904477-dehurjujqvoo2c4vjnsue0i52gflo7qg.apps.googleusercontent.com",
+              "client_id": "680925292669-8b9rto3lhen6g9nb4rr0m6tpjukquqht.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
