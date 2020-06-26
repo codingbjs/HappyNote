@@ -5,6 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,15 +14,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     FirebaseRemoteConfig remoteConfig;
     long newAppVersion = 1;
     long toolbarImgCount = 15;
+    List <File> toolbarImgList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +77,62 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // TODO: 2020-06-24 툴바 이미지 다운로드 메소드 정의
+            checkToolbarImages();
+
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        toolbarImgList.clear();
+        toolbarImgList = null;
+    }
+
+    private void checkToolbarImages() {
+        File file = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/toolbar_images");
+        if(!file.isDirectory()){
+            file.mkdir();
+        }
+
+        toolbarImgList.addAll(new ArrayList<>(Arrays.asList(file.listFiles())));
+
+        if(toolbarImgList.size() < toolbarImgCount){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReference();
+            downloadToolbarImg(storageReference);
+        }
+    }
+
+    private void downloadToolbarImg(final StorageReference storageReference) {
+
+        if(toolbarImgList == null || toolbarImgList.size() >= toolbarImgCount) return;
+
+        String fileName = "toolbar_" + toolbarImgList.size() + ".jpg"; //toolbar_0.jpg
+        File fileDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/toolbar_images");
+        final File downloadFile = new File(fileDir, fileName);
+        StorageReference downloadRef = storageReference
+                .child("toolbar_images/" + "toolbar_" + toolbarImgList.size() + ".jpg");//toolbar_images/toolbar_0.jpg
+
+        downloadRef.getFile(downloadFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                toolbarImgList.add(downloadFile);
+                if(toolbarImgList.size() < toolbarImgCount){
+                    downloadToolbarImg(storageReference);
+                }
+                Log.e("onSuccess", downloadFile.getName());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
 
 
     private void updateDialog() {
